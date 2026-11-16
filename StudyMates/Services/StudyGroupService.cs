@@ -81,5 +81,45 @@ namespace StudyMates.Services
             await context.StudyGroups.AddAsync(group);
             await context.SaveChangesAsync();
         }
+
+        public async Task<StudyGroupFormModel?> GetForEditAsync(int id)
+        {
+            return await context.StudyGroups
+                .AsNoTracking()
+                .Where(g => g.Id == id)
+                .Select(g => new StudyGroupFormModel
+                {
+                    Title = g.Title,
+                    Description = g.Description,
+                    MaxMembers = g.MaxMembers,
+                    SubjectId = g.SubjectId
+                })
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> EditAsync(int id, StudyGroupFormModel model)
+        {
+            StudyGroup? group = await context.StudyGroups.FindAsync(id);
+
+            if (group == null)
+            {
+                return false;
+            }
+
+            group.Title = model.Title;
+            group.Description = model.Description;
+            group.MaxMembers = model.MaxMembers;
+            group.SubjectId = model.SubjectId;
+
+            await context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> IsCreatorAsync(int id, string userId)
+        {
+            return await context.StudyGroups
+                .AnyAsync(g => g.Id == id && g.CreatorId == userId);
+        }
     }
 }

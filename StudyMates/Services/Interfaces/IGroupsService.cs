@@ -11,5 +11,11 @@ namespace StudyMates.Services.Interfaces
         Task<IEnumerable<SubjectViewModel>> GetSubjectsAsync();
 
         Task CreateAsync(StudyGroupFormModel model, string creatorId);
+
+        Task<StudyGroupFormModel?> GetForEditAsync(int id);
+
+        Task<bool> EditAsync(int id, StudyGroupFormModel model);
+
+        Task<bool> IsCreatorAsync(int id, string userId);
     }
 }
