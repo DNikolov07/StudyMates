@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using StudyMates.Models;
 
 namespace StudyMates.Data
 {
@@ -9,5 +10,11 @@ namespace StudyMates.Data
             : base(options)
         {
         }
+
+        public DbSet<Subject> Subjects { get; set; } = null!;
+
+        public DbSet<StudyGroup> StudyGroups { get; set; } = null!;
+
+        public DbSet<StudySession> StudySessions { get; set; } = null!;
     }
 }
