@@ -1,4 +1,4 @@
-namespace StudyMates.Models
+namespace StudyMates.ViewModels
 {
     public class ErrorViewModel
     {

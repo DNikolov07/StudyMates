@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using StudyMates.Models;
+using StudyMates.ViewModels;
 using System.Diagnostics;
 
 namespace StudyMates.Controllers
