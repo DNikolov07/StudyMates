@@ -28,6 +28,17 @@ namespace StudyMates.Data
                 .HasMany(g => g.Members)
                 .WithMany()
                 .UsingEntity(j => j.ToTable("StudyGroupMembers"));
+
+            builder.Entity<Subject>().HasData
+            (
+                new Subject { Id = 1, Name = "Mathematics" },
+                new Subject { Id = 2, Name = "Programming" },
+                new Subject { Id = 3, Name = "Physics" },
+                new Subject { Id = 4, Name = "Databases" },
+                new Subject { Id = 5, Name = "English" },
+                new Subject { Id = 6, Name = "Economics" }
+
+            );
         }
     }
 
