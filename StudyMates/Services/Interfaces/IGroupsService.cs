@@ -9,5 +9,7 @@ namespace StudyMates.Services.Interfaces
         Task<StudyGroupViewModel?> GetByIdAsync(int id, string? userId);
 
         Task<IEnumerable<SubjectViewModel>> GetSubjectsAsync();
+
+        Task CreateAsync(StudyGroupFormModel model, string creatorId);
     }
 }

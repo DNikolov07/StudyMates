@@ -2,6 +2,7 @@
 using StudyMates.Data;
 using StudyMates.Services.Interfaces;
 using StudyMates.ViewModels;
+using StudyMates.Models;
 
 namespace StudyMates.Services
 {
@@ -63,6 +64,22 @@ namespace StudyMates.Services
                     Name = s.Name
                 })
                 .ToListAsync();
+        }
+
+        public async Task CreateAsync(StudyGroupFormModel model, string creatorId)
+        {
+            StudyGroup group = new StudyGroup
+            {
+                Title = model.Title,
+                Description = model.Description,
+                MaxMembers = model.MaxMembers,
+                SubjectId = model.SubjectId,
+                CreatorId = creatorId,
+                CreatedOn = DateTime.UtcNow
+            };
+
+            await context.StudyGroups.AddAsync(group);
+            await context.SaveChangesAsync();
         }
     }
 }
