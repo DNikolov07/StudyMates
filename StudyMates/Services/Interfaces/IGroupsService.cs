@@ -17,5 +17,7 @@ namespace StudyMates.Services.Interfaces
         Task<bool> EditAsync(int id, StudyGroupFormModel model);
 
         Task<bool> IsCreatorAsync(int id, string userId);
+
+        Task<bool> DeleteAsync(int id);
     }
 }

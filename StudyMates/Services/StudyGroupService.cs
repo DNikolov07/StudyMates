@@ -121,5 +121,20 @@ namespace StudyMates.Services
             return await context.StudyGroups
                 .AnyAsync(g => g.Id == id && g.CreatorId == userId);
         }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            StudyGroup? group = await context.StudyGroups.FindAsync(id);
+
+            if (group == null)
+            {
+                return false;
+            }
+
+            context.StudyGroups.Remove(group);
+            await context.SaveChangesAsync();
+
+            return true;
+        }
     }
 }
