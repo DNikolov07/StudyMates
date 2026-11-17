@@ -1,0 +1,19 @@
+﻿@model IEnumerable<StudyGroupViewModel>
+
+@{
+    ViewData["Title"] = "Study Groups";
+}
+
+<h1 class="mb-4">@ViewData["Title"]</h1>
+
+@if (!Model.Any())
+{
+    <p class="text-muted">There are no study groups yet.</p>
+}
+
+<div class="row">
+    @foreach (StudyGroupViewModel group in Model)
+    {
+        <partial name="_StudyGroupCard" model="group" />
+    }
+</div>

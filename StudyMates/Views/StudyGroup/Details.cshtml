@@ -1,0 +1,23 @@
+﻿@model StudyGroupViewModel
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<h1>@Model.Title</h1>
+<span class="badge bg-primary mb-3">@Model.SubjectName</span>
+
+<p>@Model.Description</p>
+
+<dl class="row">
+    <dt class="col-sm-3">Created by</dt>
+    <dd class="col-sm-9">@Model.CreatorName</dd>
+
+    <dt class="col-sm-3">Maximum members</dt>
+    <dd class="col-sm-9">@Model.MaxMembers</dd>
+
+    <dt class="col-sm-3">Created on</dt>
+    <dd class="col-sm-9">@Model.CreatedOn.ToString("dd.MM.yyyy")</dd>
+</dl>
+
+<a asp-action="Index" class="btn btn-secondary">Back to all groups</a>
