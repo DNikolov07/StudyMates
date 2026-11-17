@@ -1,0 +1,16 @@
+﻿@model StudyGroupViewModel
+
+@{
+    ViewData["Title"] = "Delete Study Group";
+}
+
+<h1 class="mb-4">@ViewData["Title"]</h1>
+
+<div class="alert alert-danger">
+    Are you sure you want to delete <strong>@Model.Title</strong>? This cannot be undone.
+</div>
+
+<form method="post">
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">Cancel</a>
+</form>

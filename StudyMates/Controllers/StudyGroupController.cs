@@ -116,6 +116,47 @@ namespace StudyMates.Controllers
             return RedirectToAction(nameof(Details), new { id });
         }
 
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Delete(int id)
+        {
+            StudyGroupViewModel? group =
+                await studyGroupService.GetByIdAsync(id, GetUserId());
+
+            if (group == null)
+            {
+                return NotFound();
+            }
+
+            if (!group.IsCreator)
+            {
+                return Forbid();
+            }
+
+            return View(group);
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            if (!await studyGroupService.IsCreatorAsync(id, GetUserId()!))
+            {
+                return Forbid();
+            }
+
+            bool isDeleted = await studyGroupService.DeleteAsync(id);
+
+            if (!isDeleted)
+            {
+                return NotFound();
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
         private string? GetUserId()
         {
             return User.FindFirstValue(ClaimTypes.NameIdentifier);
