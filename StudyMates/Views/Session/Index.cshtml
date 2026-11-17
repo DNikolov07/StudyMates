@@ -25,6 +25,10 @@ else
                 <th>Date</th>
                 <th>Topic</th>
                 <th>Location</th>
+                @if (Model.IsCreator)
+                {
+                    <th></th>
+                }
             </tr>
         </thead>
         <tbody>
@@ -34,11 +38,18 @@ else
                     <td>@session.StartsOn.ToString("dd.MM.yyyy HH:mm")</td>
                     <td>@session.Topic</td>
                     <td>@session.Location</td>
+                    @if (Model.IsCreator)
+                    {
+                        <td>
+                            <form asp-action="Delete" asp-route-id="@session.Id" method="post">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    }
                 </tr>
             }
         </tbody>
     </table>
 }
 
-<a asp-controller="StudyGroup" asp-action="Details" asp-route-id="@Model.StudyGroupId"
-   class="btn btn-secondary">Back to group</a>
+<a asp-controller="StudyGroup" asp-action="Details" asp-route-id="@Model.StudyGroupId" class="btn btn-secondary">Back to group</a>

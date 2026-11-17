@@ -78,6 +78,28 @@ namespace StudyMates.Controllers
             return RedirectToAction(nameof(Index), new { groupId });
         }
 
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            int? groupId = await sessionService.GetGroupIdAsync(id);
+
+            if (groupId == null)
+            {
+                return NotFound();
+            }
+
+            if (!await groupsService.IsCreatorAsync(groupId.Value, GetUserId()!))
+            {
+                return Forbid();
+            }
+
+            await sessionService.DeleteAsync(id);
+
+            return RedirectToAction(nameof(Index), new { groupId });
+        }
+
         private string? GetUserId()
         {
             return User.FindFirstValue(ClaimTypes.NameIdentifier);

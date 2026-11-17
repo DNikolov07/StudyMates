@@ -22,9 +22,10 @@
 
 <a asp-action="Index" class="btn btn-secondary">Back to all groups</a>
 
+<a asp-controller="Session" asp-action="Index" asp-route-groupId="@Model.Id" class="btn btn-info">Sessions</a>
+
 @if (Model.IsCreator)
 {
     <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
     <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
-    <a asp-controller="Session" asp-action="Index" asp-route-groupId="@Model.Id" class="btn btn-info">Sessions</a>
 }
