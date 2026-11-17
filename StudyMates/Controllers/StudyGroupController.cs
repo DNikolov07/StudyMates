@@ -3,6 +3,7 @@ using StudyMates.Services;
 using StudyMates.Services.Interfaces;
 using StudyMates.ViewModels;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace StudyMates.Controllers
 {
@@ -36,6 +37,35 @@ namespace StudyMates.Controllers
             }
 
             return View(group);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Create()
+        {
+            StudyGroupFormModel model = new StudyGroupFormModel
+            {
+                Subjects = await studyGroupService.GetSubjectsAsync()
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(StudyGroupFormModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.Subjects = await studyGroupService.GetSubjectsAsync();
+
+                return View(model);
+            }
+
+            await studyGroupService.CreateAsync(model, GetUserId()!);
+
+            return RedirectToAction(nameof(Index));
         }
 
         private string? GetUserId()
