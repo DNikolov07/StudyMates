@@ -5,7 +5,7 @@
         <div class="card-body">
             <span class="badge bg-primary mb-2">@Model.SubjectName</span>
             <h5 class="card-title">@Model.Title</h5>
-            <p class="card-text text-muted">Up to @Model.MaxMembers members</p>
+            <p class="card-text text-muted">@Model.MembersCount / @Model.MaxMembers members</p>
         </div>
         <div class="card-footer bg-white">
             <a asp-controller="StudyGroup" asp-action="Details" asp-route-id="@Model.Id"

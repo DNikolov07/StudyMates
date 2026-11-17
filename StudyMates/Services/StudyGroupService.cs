@@ -3,6 +3,7 @@ using StudyMates.Data;
 using StudyMates.Services.Interfaces;
 using StudyMates.ViewModels;
 using StudyMates.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace StudyMates.Services
 {
@@ -29,7 +30,9 @@ namespace StudyMates.Services
                     CreatorName = g.Creator.UserName ?? string.Empty,
                     MaxMembers = g.MaxMembers,
                     CreatedOn = g.CreatedOn,
-                    IsCreator = g.CreatorId == userId
+                    IsCreator = g.CreatorId == userId,
+                    MembersCount = g.Members.Count,
+                    IsMember = g.Members.Any(m => m.Id == userId)
                 })
                 .ToListAsync();
         }
@@ -48,7 +51,9 @@ namespace StudyMates.Services
                     CreatorName = g.Creator.UserName ?? string.Empty,
                     MaxMembers = g.MaxMembers,
                     CreatedOn = g.CreatedOn,
-                    IsCreator = g.CreatorId == userId
+                    IsCreator = g.CreatorId == userId,
+                    MembersCount = g.Members.Count,
+                    IsMember = g.Members.Any(m => m.Id == userId)
                 })
                 .FirstOrDefaultAsync();
         }
@@ -77,6 +82,13 @@ namespace StudyMates.Services
                 CreatorId = creatorId,
                 CreatedOn = DateTime.UtcNow
             };
+
+            IdentityUser? creator = await context.Users.FindAsync(creatorId);
+
+            if (creator != null)
+            {
+                group.Members.Add(creator);
+            }
 
             await context.StudyGroups.AddAsync(group);
             await context.SaveChangesAsync();
@@ -132,6 +144,64 @@ namespace StudyMates.Services
             }
 
             context.StudyGroups.Remove(group);
+            await context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> JoinAsync(int groupId, string userId)
+        {
+            StudyGroup? group = await context.StudyGroups
+                .Include(g => g.Members)
+                .FirstOrDefaultAsync(g => g.Id == groupId);
+
+            if (group == null)
+            {
+                return false;
+            }
+
+            if (group.Members.Any(m => m.Id == userId))
+            {
+                return false;
+            }
+
+            if (group.Members.Count >= group.MaxMembers)
+            {
+                return false;
+            }
+
+            IdentityUser? user = await context.Users.FindAsync(userId);
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            group.Members.Add(user);
+            await context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> LeaveAsync(int groupId, string userId)
+        {
+            StudyGroup? group = await context.StudyGroups
+                .Include(g => g.Members)
+                .FirstOrDefaultAsync(g => g.Id == groupId);
+
+            if (group == null || group.CreatorId == userId)
+            {
+                return false;
+            }
+
+            IdentityUser? member = group.Members.FirstOrDefault(m => m.Id == userId);
+
+            if (member == null)
+            {
+                return false;
+            }
+
+            group.Members.Remove(member);
             await context.SaveChangesAsync();
 
             return true;

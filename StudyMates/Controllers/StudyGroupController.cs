@@ -157,6 +157,36 @@ namespace StudyMates.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Join(int id)
+        {
+            bool isJoined = await studyGroupService.JoinAsync(id, GetUserId()!);
+
+            if (!isJoined)
+            {
+                TempData["Error"] = "You cannot join this group. It may be full or you are already a member.";
+            }
+
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Leave(int id)
+        {
+            bool hasLeft = await studyGroupService.LeaveAsync(id, GetUserId()!);
+
+            if (!hasLeft)
+            {
+                TempData["Error"] = "You cannot leave this group.";
+            }
+
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
         private string? GetUserId()
         {
             return User.FindFirstValue(ClaimTypes.NameIdentifier);

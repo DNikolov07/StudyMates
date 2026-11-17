@@ -10,6 +10,8 @@
         public int MaxMembers { get; set; }
         public DateTime CreatedOn { get; set; }
         public bool IsCreator { get; set; }
+        public int MembersCount { get; set; }
+        public bool IsMember { get; set; }
 
 
     }

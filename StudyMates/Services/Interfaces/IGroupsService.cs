@@ -19,5 +19,9 @@ namespace StudyMates.Services.Interfaces
         Task<bool> IsCreatorAsync(int id, string userId);
 
         Task<bool> DeleteAsync(int id);
+
+        Task<bool> JoinAsync(int groupId, string userId);
+
+        Task<bool> LeaveAsync(int groupId, string userId);
     }
 }

@@ -4,6 +4,11 @@
     ViewData["Title"] = Model.Title;
 }
 
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-warning">@TempData["Error"]</div>
+}
+
 <h1>@Model.Title</h1>
 <span class="badge bg-primary mb-3">@Model.SubjectName</span>
 
@@ -13,8 +18,8 @@
     <dt class="col-sm-3">Created by</dt>
     <dd class="col-sm-9">@Model.CreatorName</dd>
 
-    <dt class="col-sm-3">Maximum members</dt>
-    <dd class="col-sm-9">@Model.MaxMembers</dd>
+    <dt class="col-sm-3">Members</dt>
+    <dd class="col-sm-9">@Model.MembersCount / @Model.MaxMembers</dd>
 
     <dt class="col-sm-3">Created on</dt>
     <dd class="col-sm-9">@Model.CreatedOn.ToString("dd.MM.yyyy")</dd>
@@ -23,6 +28,26 @@
 <a asp-action="Index" class="btn btn-secondary">Back to all groups</a>
 
 <a asp-controller="Session" asp-action="Index" asp-route-groupId="@Model.Id" class="btn btn-info">Sessions</a>
+
+@if (User.Identity?.IsAuthenticated == true && !Model.IsCreator)
+{
+    if (Model.IsMember)
+    {
+        <form asp-action="Leave" asp-route-id="@Model.Id" method="post" class="d-inline">
+            <button type="submit" class="btn btn-outline-danger">Leave group</button>
+        </form>
+    }
+    else if (Model.MembersCount < Model.MaxMembers)
+    {
+        <form asp-action="Join" asp-route-id="@Model.Id" method="post" class="d-inline">
+            <button type="submit" class="btn btn-success">Join group</button>
+        </form>
+    }
+    else
+    {
+        <span class="badge bg-secondary">This group is full</span>
+    }
+}
 
 @if (Model.IsCreator)
 {
