@@ -21,3 +21,8 @@
 </dl>
 
 <a asp-action="Index" class="btn btn-secondary">Back to all groups</a>
+
+@if (Model.IsCreator)
+{
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+}

@@ -68,6 +68,54 @@ namespace StudyMates.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Edit(int id)
+        {
+            StudyGroupFormModel? model = await studyGroupService.GetForEditAsync(id);
+
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            if (!await studyGroupService.IsCreatorAsync(id, GetUserId()!))
+            {
+                return Forbid();
+            }
+
+            model.Subjects = await studyGroupService.GetSubjectsAsync();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, StudyGroupFormModel model)
+        {
+            if (!await studyGroupService.IsCreatorAsync(id, GetUserId()!))
+            {
+                return Forbid();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                model.Subjects = await studyGroupService.GetSubjectsAsync();
+
+                return View(model);
+            }
+
+            bool isEdited = await studyGroupService.EditAsync(id, model);
+
+            if (!isEdited)
+            {
+                return NotFound();
+            }
+
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
         private string? GetUserId()
         {
             return User.FindFirstValue(ClaimTypes.NameIdentifier);
