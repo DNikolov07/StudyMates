@@ -1,3 +1,10 @@
+:root {
+  --sm-primary: #4f46e5;
+  --sm-primary-dark: #4338ca;
+  --sm-soft: #eef2ff;
+  --sm-page: #f8f9fc;
+}
+
 html {
   font-size: 14px;
 }
@@ -19,4 +26,82 @@ html {
 
 body {
   margin-bottom: 60px;
+  background-color: var(--sm-page);
+}
+
+/* Navigation */
+.navbar {
+  border-top: 4px solid var(--sm-primary);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  color: var(--sm-primary) !important;
+}
+
+/* Primary color */
+.btn-primary {
+  background-color: var(--sm-primary);
+  border-color: var(--sm-primary);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--sm-primary-dark);
+  border-color: var(--sm-primary-dark);
+}
+
+.btn-outline-primary {
+  color: var(--sm-primary);
+  border-color: var(--sm-primary);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--sm-primary);
+  border-color: var(--sm-primary);
+}
+
+.badge.bg-primary {
+  background-color: var(--sm-primary) !important;
+}
+
+/* Home page */
+.hero {
+  background: linear-gradient(135deg, var(--sm-primary), #7c3aed);
+  color: #fff;
+  border-radius: 1rem;
+  padding: 3.5rem 2rem;
+}
+
+.hero .lead {
+  opacity: 0.9;
+}
+
+.feature-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.75rem;
+  background-color: var(--sm-soft);
+  color: var(--sm-primary);
+  font-size: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Study group cards */
+.group-card {
+  border: none;
+  border-radius: 0.75rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.group-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.08) !important;
+}
+
+.group-card .card-footer {
+  border-top: none;
+  border-radius: 0 0 0.75rem 0.75rem;
 }

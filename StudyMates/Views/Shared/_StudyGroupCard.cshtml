@@ -1,13 +1,16 @@
 ﻿@model StudyGroupViewModel
 
 <div class="col-md-4 mb-4">
-    <div class="card h-100 shadow-sm">
+    <div class="card group-card h-100 shadow-sm">
         <div class="card-body">
             <span class="badge bg-primary mb-2">@Model.SubjectName</span>
             <h5 class="card-title">@Model.Title</h5>
-            <p class="card-text text-muted">@Model.MembersCount / @Model.MaxMembers members</p>
+            <p class="card-text text-muted small">
+                @(Model.Description.Length > 100 ? Model.Description.Substring(0, 100) + "..." : Model.Description)
+            </p>
         </div>
-        <div class="card-footer bg-white">
+        <div class="card-footer bg-white d-flex justify-content-between align-items-center">
+            <span class="text-muted small">@Model.MembersCount / @Model.MaxMembers members</span>
             <a asp-controller="StudyGroup" asp-action="Details" asp-route-id="@Model.Id"
                class="btn btn-outline-primary btn-sm">Details</a>
         </div>
